@@ -898,3 +898,15 @@ p {
   padding: 0 14px;
   font-weight: 700;
 }
+
+.form-note {
+  margin: 2px 0 10px;
+  font-size: 0.86rem;
+}
+
+.form-status {
+  min-height: 22px;
+  margin: 0 0 12px;
+  color: #1f5d99;
+  font-weight: 700;
+}

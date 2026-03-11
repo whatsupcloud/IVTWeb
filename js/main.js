@@ -122,17 +122,47 @@
       event.preventDefault();
 
       var submitButton = form.querySelector('button[type="submit"]');
+      var status = form.querySelector('[data-form-status]');
       if (!submitButton) return;
 
+      var formData = new FormData(form);
+      var payload = Object.fromEntries(formData.entries());
       var originalLabel = submitButton.textContent;
-      submitButton.textContent = 'Enquiry Sent';
+
+      submitButton.textContent = 'Saving Enquiry';
       submitButton.disabled = true;
+      if (status) status.textContent = '';
+
+      fetch('/api/enquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+        .then(function (response) { return response.json(); })
+        .then(function (data) {
+          if (!data.ok) {
+            throw new Error(data.message || 'Unable to save enquiry.');
+          }
+
+          if (status) {
+            status.textContent = 'Enquiry saved in database and Excel file successfully.';
+          }
+          submitButton.textContent = 'Enquiry Saved';
+          form.reset();
+        })
+        .catch(function (error) {
+          if (status) {
+            status.textContent = error.message || 'Unable to save enquiry right now.';
+          }
+          submitButton.textContent = originalLabel;
+          submitButton.disabled = false;
+          return;
+        });
 
       setTimeout(function () {
-        form.reset();
         submitButton.textContent = originalLabel;
         submitButton.disabled = false;
-      }, 1300);
+      }, 1800);
     });
   }
 
@@ -209,3 +239,4 @@
     });
   }
 })();
+
