@@ -136,7 +136,7 @@
       var payload = Object.fromEntries(formData.entries());
       var originalLabel = submitButton.textContent;
 
-      submitButton.textContent = 'Saving Enquiry';
+      submitButton.textContent = 'Submitting Request';
       submitButton.disabled = true;
       if (status) status.textContent = '';
 
@@ -163,7 +163,7 @@
         })
         .then(function () {
           if (status) {
-            status.textContent = 'Enquiry saved in database and Excel file successfully.';
+            status.textContent = 'Thank you. Your enquiry has been received successfully. Our team will review your requirement and get in touch with you shortly.';
           }
           form.reset();
         })
@@ -252,5 +252,6 @@
     });
   }
 })();
+
 
 
