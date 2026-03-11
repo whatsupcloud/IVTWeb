@@ -101,20 +101,6 @@
     animateCounters();
   }
 
-  var backToTop = document.querySelector('[data-back-to-top]');
-  if (backToTop) {
-    window.addEventListener('scroll', function () {
-      if (window.scrollY > 280) {
-        backToTop.classList.add('show');
-      } else {
-        backToTop.classList.remove('show');
-      }
-    });
-
-    backToTop.addEventListener('click', function () {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
 
   var form = document.querySelector('.contact-form');
   if (form) {
@@ -140,11 +126,31 @@
       submitButton.disabled = true;
       if (status) status.textContent = '';
 
-      fetch('/api/enquiries', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      })
+      var hostName = (location.hostname || '').toLowerCase();
+      var useLocalEnquiryApi = hostName === 'localhost' || hostName === '127.0.0.1';
+      var request = useLocalEnquiryApi
+        ? fetch('/api/enquiries', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          })
+        : (function () {
+            var hostedFormData = new FormData();
+            Object.keys(payload).forEach(function (key) {
+              hostedFormData.append(key, payload[key]);
+            });
+            hostedFormData.append('_subject', 'New IVT website enquiry');
+            hostedFormData.append('_template', 'table');
+            hostedFormData.append('_url', location.href);
+
+            return fetch('https://formsubmit.co/ajax/inovalyticstechnology@gmail.com', {
+              method: 'POST',
+              headers: { Accept: 'application/json' },
+              body: hostedFormData
+            });
+          })();
+
+      request
         .then(function (response) {
           return response.text().then(function (text) {
             var data;
@@ -154,16 +160,17 @@
               data = { ok: false, message: 'Server returned an unexpected response.' };
             }
 
-            if (!response.ok || !data.ok) {
+            var isSuccessful = response.ok && (typeof data.ok === 'undefined' ? data.success !== false : data.ok);
+            if (!isSuccessful) {
               throw new Error(data.message || 'Unable to save enquiry right now.');
             }
 
             return data;
           });
         })
-        .then(function () {
+        .then(function (data) {
           if (status) {
-            status.textContent = 'Thank you. Your enquiry has been received successfully. Our team will review your requirement and get in touch with you shortly.';
+            status.textContent = data.message || (useLocalEnquiryApi ? 'Thank you. Your enquiry has been received successfully. Our team will review your requirement and get in touch with you shortly.' : 'Thank you. Your enquiry has been submitted successfully. IVT will review your requirement and respond using the contact details you shared.');
           }
           form.reset();
         })
@@ -252,6 +259,7 @@
     });
   }
 })();
+
 
 
 

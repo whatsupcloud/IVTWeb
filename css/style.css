@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --bg: #f9fcff;
   --bg-soft: #f1f7ff;
   --surface: rgba(255, 255, 255, 0.7);
@@ -585,30 +585,6 @@ p {
   padding: 14px;
 }
 
-.back-to-top {
-  position: fixed;
-  right: 18px;
-  bottom: 18px;
-  width: 44px;
-  height: 44px;
-  border: 0;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #2f7fe8, #4b95f6);
-  color: #fff;
-  font-weight: 700;
-  box-shadow: 0 12px 26px rgba(47, 127, 232, 0.3);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(12px);
-  transition: 0.28s ease;
-  z-index: 1300;
-}
-
-.back-to-top.show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
 
 .reveal {
   opacity: 0;
