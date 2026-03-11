@@ -22,12 +22,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Prepare static site artifact
+      - name: Prepare empty artifact
         shell: bash
         run: |
           mkdir -p site
-          cp *.html site/
-          cp -r css images js site/
           touch site/.nojekyll
 
       - name: Upload Pages artifact
