@@ -135,4 +135,77 @@
       }, 1300);
     });
   }
+
+  var chatbotToggle = document.querySelector('[data-chatbot-toggle]');
+  var chatbotPanel = document.querySelector('[data-chatbot-panel]');
+  var chatbotMessages = document.querySelector('[data-chatbot-messages]');
+  var chatbotForm = document.querySelector('[data-chatbot-form]');
+  var chatbotInput = document.querySelector('[data-chatbot-input]');
+  var quickActions = document.querySelectorAll('[data-chatbot-question]');
+
+  function appendChatMessage(text, role) {
+    if (!chatbotMessages) return;
+    var item = document.createElement('div');
+    item.className = 'chatbot-message ' + (role === 'user' ? 'chatbot-user' : 'chatbot-bot');
+    item.textContent = text;
+    chatbotMessages.appendChild(item);
+    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+  }
+
+  function getChatbotReply(message) {
+    var value = (message || '').toLowerCase();
+
+    if (value.indexOf('service') !== -1 || value.indexOf('ai') !== -1) {
+      return 'IVT offers AI solutions, machine learning, data analytics, websites, and mobile app development.';
+    }
+
+    if (value.indexOf('contact') !== -1 || value.indexOf('email') !== -1) {
+      return 'You can reach IVT at inovalyticstechnology@gmail.com or use the Contact page for project enquiries.';
+    }
+
+    if (value.indexOf('price') !== -1 || value.indexOf('cost') !== -1 || value.indexOf('quote') !== -1) {
+      return 'IVT shares pricing after understanding your project scope, timeline, and required features.';
+    }
+
+    if (value.indexOf('location') !== -1 || value.indexOf('pune') !== -1) {
+      return 'IVT is based in Pune, India and supports clients remotely as well as through scheduled consultations.';
+    }
+
+    if (value.indexOf('website') !== -1 || value.indexOf('app') !== -1 || value.indexOf('chatbot') !== -1) {
+      return 'IVT can build business websites, mobile apps, dashboards, and chatbot-based automation solutions.';
+    }
+
+    return 'IVT is here to help with services, pricing, project planning, and contact details. Ask me anything about your project.';
+  }
+
+  if (chatbotToggle && chatbotPanel) {
+    chatbotToggle.setAttribute('aria-expanded', 'false');
+
+    chatbotToggle.addEventListener('click', function () {
+      var isOpen = chatbotPanel.classList.toggle('open');
+      chatbotToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+  }
+
+  quickActions.forEach(function (button) {
+    button.addEventListener('click', function () {
+      var question = button.getAttribute('data-chatbot-question');
+      appendChatMessage(question, 'user');
+      appendChatMessage(getChatbotReply(question), 'bot');
+      if (chatbotPanel) chatbotPanel.classList.add('open');
+      if (chatbotToggle) chatbotToggle.setAttribute('aria-expanded', 'true');
+    });
+  });
+
+  if (chatbotForm && chatbotInput) {
+    chatbotForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      var question = chatbotInput.value.trim();
+      if (!question) return;
+
+      appendChatMessage(question, 'user');
+      appendChatMessage(getChatbotReply(question), 'bot');
+      chatbotInput.value = '';
+    });
+  }
 })();

@@ -769,3 +769,132 @@ p {
   }
 }
 
+
+.chatbot-toggle {
+  position: fixed;
+  right: 18px;
+  bottom: 74px;
+  width: 58px;
+  height: 58px;
+  border: 0;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #0a2f59, #2e78c6);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  box-shadow: 0 16px 32px rgba(9, 43, 82, 0.28);
+  z-index: 1300;
+}
+
+.chatbot-panel {
+  position: fixed;
+  right: 18px;
+  bottom: 142px;
+  width: min(360px, calc(100vw - 28px));
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid #c9ddf5;
+  box-shadow: 0 24px 48px rgba(12, 45, 82, 0.18);
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(16px);
+  transition: 0.26s ease;
+  z-index: 1300;
+}
+
+.chatbot-panel.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.chatbot-head {
+  padding: 16px 18px 12px;
+  background: linear-gradient(145deg, #0a2f59, #2e78c6);
+  color: #fff;
+}
+
+.chatbot-head strong {
+  display: block;
+  font-size: 1rem;
+}
+
+.chatbot-head span {
+  font-size: 0.84rem;
+  opacity: 0.88;
+}
+
+.chatbot-messages {
+  max-height: 270px;
+  overflow-y: auto;
+  padding: 16px;
+  background: #f8fbff;
+}
+
+.chatbot-message {
+  max-width: 88%;
+  padding: 10px 12px;
+  border-radius: 14px;
+  margin-bottom: 10px;
+  font-size: 0.93rem;
+  line-height: 1.5;
+}
+
+.chatbot-bot {
+  background: #e9f2ff;
+  color: #20476f;
+  border-top-left-radius: 6px;
+}
+
+.chatbot-user {
+  margin-left: auto;
+  background: #0d3f77;
+  color: #fff;
+  border-top-right-radius: 6px;
+}
+
+.chatbot-quick {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 16px 16px;
+  background: #f8fbff;
+}
+
+.chatbot-quick button {
+  border: 1px solid #bfd8f7;
+  background: #fff;
+  color: #275687;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.chatbot-form {
+  display: flex;
+  gap: 8px;
+  padding: 14px 16px 16px;
+  border-top: 1px solid #dceafa;
+  background: #fff;
+}
+
+.chatbot-form input {
+  flex: 1;
+  border: 1px solid #bfd8f7;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font: inherit;
+}
+
+.chatbot-form button {
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #0a2f59, #2e78c6);
+  color: #fff;
+  padding: 0 14px;
+  font-weight: 700;
+}
