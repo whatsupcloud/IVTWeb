@@ -125,6 +125,13 @@
       var status = form.querySelector('[data-form-status]');
       if (!submitButton) return;
 
+      if (location.protocol === 'file:') {
+        if (status) {
+          status.textContent = 'Please open this website through the IVT local server so enquiries can be saved.';
+        }
+        return;
+      }
+
       var formData = new FormData(form);
       var payload = Object.fromEntries(formData.entries());
       var originalLabel = submitButton.textContent;
@@ -138,31 +145,37 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       })
-        .then(function (response) { return response.json(); })
-        .then(function (data) {
-          if (!data.ok) {
-            throw new Error(data.message || 'Unable to save enquiry.');
-          }
+        .then(function (response) {
+          return response.text().then(function (text) {
+            var data;
+            try {
+              data = JSON.parse(text || '{}');
+            } catch (error) {
+              data = { ok: false, message: 'Server returned an unexpected response.' };
+            }
 
+            if (!response.ok || !data.ok) {
+              throw new Error(data.message || 'Unable to save enquiry right now.');
+            }
+
+            return data;
+          });
+        })
+        .then(function () {
           if (status) {
             status.textContent = 'Enquiry saved in database and Excel file successfully.';
           }
-          submitButton.textContent = 'Enquiry Saved';
           form.reset();
         })
         .catch(function (error) {
           if (status) {
             status.textContent = error.message || 'Unable to save enquiry right now.';
           }
+        })
+        .finally(function () {
           submitButton.textContent = originalLabel;
           submitButton.disabled = false;
-          return;
         });
-
-      setTimeout(function () {
-        submitButton.textContent = originalLabel;
-        submitButton.disabled = false;
-      }, 1800);
     });
   }
 
@@ -239,4 +252,5 @@
     });
   }
 })();
+
 

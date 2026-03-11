@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const root = process.cwd();
+const port = Number(process.env.PORT || 5510);
 const dataDir = path.join(root, 'data');
 const csvPath = path.join(dataDir, 'enquiries.csv');
 const jsonPath = path.join(dataDir, 'enquiries.json');
@@ -155,4 +156,9 @@ http.createServer(async (req, res) => {
     });
     res.end(data);
   });
-}).listen(5510, '127.0.0.1');
+}).listen(port, '127.0.0.1', () => {
+  console.log('IVT server running on http://127.0.0.1:' + port);
+  console.log('CSV file: ' + csvPath);
+  console.log('JSON file: ' + jsonPath);
+});
+
