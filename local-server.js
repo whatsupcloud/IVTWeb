@@ -156,9 +156,10 @@ http.createServer(async (req, res) => {
     });
     res.end(data);
   });
-}).listen(port, '127.0.0.1', () => {
+}).listen(port, () => {
   console.log('IVT server running on http://127.0.0.1:' + port);
   console.log('CSV file: ' + csvPath);
   console.log('JSON file: ' + jsonPath);
 });
+
 
